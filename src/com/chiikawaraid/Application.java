@@ -1,5 +1,6 @@
 package com.chiikawaraid;
 
+import com.chiikawaraid.battle.HuntingGround;
 import com.chiikawaraid.character.Chiikawa;
 import com.chiikawaraid.character.Hachiware;
 import com.chiikawaraid.character.Player;
@@ -45,6 +46,29 @@ public class Application {
                     break;
                 default :
                     System.out.println("1번, 2번, 3번 중 하나의 선택부탁드립니다.");
+            }
+        }
+        boolean next =true;
+
+        while(next) {
+            String nextStep =null;
+//            번: 사냥
+//            2번: 레이드//
+//            3번: Shop/
+//            4번: Smith//
+//            5번: 무료 휴식//
+//            6번: 캐릭터 정보 확인/
+//            7번: 게임 종료
+
+            System.out.println("다음 행동을 선택하십시오.");
+            System.out.println("1. 사냥\n 2.레이드\n 3.Shop\n 4. Smith \n 5.Rest \n 6. 캐릭터 정보 확인 \n7. 게임 종료");
+
+            int nextSt = sc.nextInt();
+            switch(nextSt) {
+                case 1:
+                    System.out.println("사냥을 선택하셨습니다.");
+                    HuntingGround.hunt(player, sc);
+                    break;
             }
         }
 
