@@ -38,7 +38,6 @@ public class Usagi extends Player {
                 if (!spendMp(GameBalance.SKILL_THREE_MP_COST)) {
                     return new ActionResult(false, "MP가 부족합니다.", 0, 0, 0, 0);
                 }
-                //
                 return new ActionResult(
                         true, "기운 나는 주문!", 0,
                         GameBalance.USAGI_SKILL_HP_RECOVERY, 0, 0
