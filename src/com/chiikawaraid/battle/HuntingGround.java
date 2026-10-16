@@ -1,5 +1,6 @@
 package com.chiikawaraid.battle;
 
+import com.chiikawaraid.BattleResult;
 import com.chiikawaraid.character.Player;
 import com.chiikawaraid.common.ActionResult;
 
@@ -22,34 +23,16 @@ public class HuntingGround {
             return;
         }
 
-        while (monster.isAlive() && !player.isDead()) {
+        BattleResult result = BattleService.battle(player, monster, sc);
 
-            System.out.println("몬스터의 HP : "+monster.getHp());
-            System.out.println("유저의 HP : "+player.getHp());
-            System.out.println("유저의 MP :" + player.getMp());
-
-            System.out.println("스킬을 선택하세요.");
-            int skillNumber = sc.nextInt();
-
-            ActionResult result = player.useSkill(skillNumber);
-
-            if(!result.isSuccess()){
-                System.out.println("스킬을 다시 선택하세요.");
-
-                continue;
-            }
-
-            System.out.println(result.getMessage());
-
-            monster.takeDamage(result.getDamage());
-
-            if(monster.isAlive()) {
-                player.takeDamage(monster.getDamage()*(100-result.getDamageReductionPercent())/100);
-            }        }
-
-        if(!monster.isAlive()){
+        if (result == BattleResult.WIN) {
             System.out.println("몬스터를 처치하였습니다.");
             player.addGold(monster.getGold());
+
+            System.out.println(monster.getGold() + "골드를 획득했습니다.");
+        }
+        if (result == BattleResult.ESCAPE) {
+            System.out.println("전투에서 도망쳤습니다.");
         }
 
         if(player.isDead()) {
