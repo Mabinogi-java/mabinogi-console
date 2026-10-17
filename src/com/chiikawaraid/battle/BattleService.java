@@ -13,9 +13,22 @@ public class BattleService {
 
     public static BattleResult battle(Player player, Monster monster, Scanner sc) {
 
+        int turn = 1;
+
         while(monster.isAlive() && !player.isDead()) {System.out.println("몬스터의 HP : "+monster.getHp());
+            System.out.println("현재 턴 : " + turn);
+            int attackDamage = monster.getDamage();
+
+            if (monster instanceof RaidBoss) {
+                attackDamage = ((RaidBoss) monster).getAttackDamage(turn);
+                System.out.println("세이렌의 다음 공격 : " + ((RaidBoss) monster).getAttackName(turn));
+                System.out.println("예상 피해량 : " + attackDamage);
+            }
             System.out.println("유저의 HP : "+player.getHp());
             System.out.println("유저의 MP :" + player.getMp());
+
+            System.out.println("무기 강화 단계: +" + player.getEnhancementLevel());
+            System.out.println("공격력: " + player.getAttackPower());
 
             System.out.println("스킬을 선택하세요.");
             if (player instanceof Chiikawa) {
@@ -36,6 +49,13 @@ public class BattleService {
             System.out.println("5. 포션");
             System.out.println("6. 도망");
 
+            while (!sc.hasNextInt()) {
+                if (!sc.hasNext()) {
+                    return BattleResult.ESCAPE;
+                }
+                System.out.println("int 범위의 정수를 입력해 주세요.");
+                sc.next();
+            }
             int skillNumber = sc.nextInt();
 
             if(skillNumber==6) {
@@ -50,6 +70,13 @@ public class BattleService {
                 System.out.println("1. HP 포션");
                 System.out.println("2. MP 포션");
 
+                while (!sc.hasNextInt()) {
+                    if (!sc.hasNext()) {
+                        return BattleResult.ESCAPE;
+                    }
+                    System.out.println("int 범위의 정수를 입력해 주세요.");
+                    sc.next();
+                }
                 int pointNumber = sc.nextInt();
 
                 if(pointNumber==1){
@@ -76,8 +103,7 @@ public class BattleService {
 
             System.out.println(result.getMessage());
             if (result.getDamage() > 0) {
-                System.out.println("몬스터에게 " + result.getDamage() + "의 피해를 입혔습니다.");
-            }
+                System.out.println(monster.getName() + "에게 " + result.getDamage() + "의 피해를 입혔습니다.");            }
 
             int beforeHp = player.getHp();
             int beforeMp = player.getMp();
@@ -100,10 +126,10 @@ public class BattleService {
             monster.takeDamage(result.getDamage());
 
             if(monster.isAlive()) {
-                int damage = monster.getDamage() * (100 - result.getDamageReductionPercent()) / 100;
-                player.takeDamage(damage);
+                int damage = attackDamage * (100 - result.getDamageReductionPercent()) / 100;                player.takeDamage(damage);
                 System.out.println("몬스터의 반격! " + player.getName() + "이(가) " + damage + "의 피해를 받았습니다.");
             }
+            turn++;
 
         }
         if (!monster.isAlive()) {

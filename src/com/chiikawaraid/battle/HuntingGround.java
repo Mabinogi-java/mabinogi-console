@@ -11,6 +11,13 @@ public class HuntingGround {
 
         System.out.println("사냥할 몬스터를 선택하세요.");
         System.out.println("1. 작은 몬스터\n 2. 큰 몬스터");
+        while (!sc.hasNextInt()) {
+            if (!sc.hasNext()) {
+                return;
+            }
+            System.out.println("int 범위의 정수를 입력해 주세요.");
+            sc.next();
+        }
         int input = sc.nextInt();
 
         Monster monster;
